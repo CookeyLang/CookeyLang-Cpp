@@ -36,6 +36,21 @@ std::vector<Token> lexer(std::string code)
         case '-': match('=') ? apptok(TType::MINUS_EQ) : match('-') ? apptok(TType::MINUS_MINUS) : apptok(TType::MINUS); break;
         case '*': match('=') ? apptok(TType::TIMES_EQ) : apptok(TType::TIMES); break;
         case '/': match('=') ? apptok(TType::DIVIDE_EQ) : apptok(TType::DIVIDE); break;
+		case '^': match('=') ? apptok(TType::POWER_EQ) : apptok(TType::POWER); break;
+
+		case '%':
+			if (match('%')) while (VALID && code[(int64_t)i + 1] != '\n') i++;
+			else if (match('*')) {
+				while (VALID && !(code[(int64_t)i + 1] == '*' && code[(int64_t)i + 2] == '%')) code[i] == '\n' ? newline() : next();
+
+				if (code[(int64_t)i + 1] != '*' && code[(int64_t)i + 2] != '%') error(line, col, "Unterminated multi-line comment.");
+
+				next(); // the *
+				next(); // the %
+			}
+			else if (match('=')) apptok(TType::MODULO_EQ);
+			else apptok(TType::MODULO);
+			break;
 
 		case ';': apptok(TType::SEMI); break;
 		case ',': apptok(TType::COMMA); break;
