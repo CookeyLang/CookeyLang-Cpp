@@ -4,7 +4,7 @@
 #define VALID i < code.length()
 
 // functions
-static void bappend(std::vector<Token>* output, int line, int col, TType type, std::string val = "");
+static void bappend(std::vector<Token>* output, int line, int col, TType type, std::string val);
 
 static void bnewline(int* line, int* col, int* i);
 static void bnext(int* col, int* i);
@@ -23,19 +23,45 @@ std::vector<Token> lexer(std::string code)
 
 	using namespace std::placeholders; // _1, _2, etc
 	auto append = std::bind(bappend, &output, line, col, _1, _2);
+	auto apptok = std::bind(bappend, &output, line, col, _1, "");
 	auto newline = std::bind(bnewline, &line, &col, &i);
 	auto next = std::bind(bnext, &col, &i);
-	auto match = std::bind(bmatch, code, i, _1);
+	auto match = std::bind(bmatch, code, &i, _1);
 
 	while (VALID) {
 		char curr = code[i];
 
 		switch (curr) {
+		case '+': match('=') ? apptok(TType::PLUS_EQ) : match('+') ? apptok(TType::PLUS_PLUS) : apptok(TType::PLUS); break;
+        case '-': match('=') ? apptok(TType::MINUS_EQ) : match('-') ? apptok(TType::MINUS_MINUS) : apptok(TType::MINUS); break;
+        case '*': match('=') ? apptok(TType::TIMES_EQ) : apptok(TType::TIMES); break;
+        case '/': match('=') ? apptok(TType::DIVIDE_EQ) : apptok(TType::DIVIDE); break;
+
+		case ';': apptok(TType::SEMI); break;
+		case ',': apptok(TType::COMMA); break;
+		case '.': apptok(TType::DOT); break;
+		case '@': apptok(TType::AT); break;
+
+		case '(': apptok(TType::LEFT_PAREN); break;
+        case ')': apptok(TType::RIGHT_PAREN); break;
+        case '{': apptok(TType::LEFT_BRACE); break;
+        case '}': apptok(TType::RIGHT_BRACE); break;
+
+		case ' ':
+		case '\r':
+		case '\t':
+			// ignore whitespace
+			break;
+
+		case '\n':
+			newline();
+			break;
+
 		default:
 			error(line, col, "Unexpected character %c", curr);
 			break;
 		}
-		
+
 		next();
 	}
 
