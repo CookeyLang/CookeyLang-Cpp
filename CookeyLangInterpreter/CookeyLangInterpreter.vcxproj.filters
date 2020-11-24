@@ -56,5 +56,8 @@
     <ClInclude Include="token.h">
       <Filter>Resource Files\token</Filter>
     </ClInclude>
+    <ClInclude Include="main.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

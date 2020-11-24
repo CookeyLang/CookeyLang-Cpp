@@ -1,4 +1,5 @@
 #include "lexer.h"
+#include <iostream>
 
 // macros
 #define VALID i < code.length()
@@ -20,15 +21,16 @@ std::vector<Token> lexer(std::string code)
 {
 	int line = 1, col = 1, i = 0;
 	std::vector<Token> output;
-
 	using namespace std::placeholders; // _1, _2, etc
-	auto append = std::bind(bappend, &output, line, col, _1, _2);
-	auto apptok = std::bind(bappend, &output, line, col, _1, "");
-	auto newline = std::bind(bnewline, &line, &col, &i);
-	auto next = std::bind(bnext, &col, &i);
-	auto match = std::bind(bmatch, code, &i, _1);
+
 
 	while (VALID) {
+		auto append = std::bind(bappend, &output, line, col, _1, _2);
+		auto apptok = std::bind(bappend, &output, line, col, _1, "");
+		auto newline = std::bind(bnewline, &line, &col, &i);
+		auto next = std::bind(bnext, &col, &i);
+		auto match = std::bind(bmatch, code, &i, _1);
+
 		char curr = code[i];
 
 		switch (curr) {
@@ -43,10 +45,14 @@ std::vector<Token> lexer(std::string code)
 			else if (match('*')) {
 				while (VALID && !(code[(int64_t)i + 1] == '*' && code[(int64_t)i + 2] == '%')) code[i] == '\n' ? newline() : next();
 
-				if (code[(int64_t)i + 1] != '*' && code[(int64_t)i + 2] != '%') error(line, col, "Unterminated multi-line comment.");
-
-				next(); // the *
-				next(); // the %
+				if (code[(int64_t)i + 1] != '*' && code[(int64_t)i + 2] != '%') {
+					error(line, col, "Unterminated multi-line comment.");
+				}
+				else {
+					next(); // the *
+					next(); // the %
+					std::cout << i << std::endl;
+				}
 			}
 			else if (match('=')) apptok(TType::MODULO_EQ);
 			else apptok(TType::MODULO);
