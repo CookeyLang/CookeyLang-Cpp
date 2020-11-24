@@ -13,14 +13,17 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="Source Files\parser">
-      <UniqueIdentifier>{a5372e42-fbab-404e-948a-73f49169aaa3}</UniqueIdentifier>
+    <Filter Include="Resource Files\interpreter">
+      <UniqueIdentifier>{822f534c-740a-4f30-a0f6-ae8fcda73832}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\lexer">
+    <Filter Include="Resource Files\lexer">
       <UniqueIdentifier>{5db61ac5-8f6b-43a4-ba5a-61a26aa7646b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\interpreter">
-      <UniqueIdentifier>{822f534c-740a-4f30-a0f6-ae8fcda73832}</UniqueIdentifier>
+    <Filter Include="Resource Files\parser">
+      <UniqueIdentifier>{a5372e42-fbab-404e-948a-73f49169aaa3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\token">
+      <UniqueIdentifier>{4faeac86-f742-47fe-b5e1-641e99e1eafa}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -28,27 +31,30 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="interpreter.cpp">
-      <Filter>Source Files\interpreter</Filter>
+      <Filter>Resource Files\interpreter</Filter>
     </ClCompile>
     <ClCompile Include="lexer.cpp">
-      <Filter>Source Files\lexer</Filter>
+      <Filter>Resource Files\lexer</Filter>
     </ClCompile>
     <ClCompile Include="parser.cpp">
-      <Filter>Source Files\parser</Filter>
+      <Filter>Resource Files\parser</Filter>
     </ClCompile>
     <ClCompile Include="token.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Resource Files\token</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="interpreter.h">
-      <Filter>Source Files\interpreter</Filter>
+      <Filter>Resource Files\interpreter</Filter>
     </ClInclude>
     <ClInclude Include="parser.h">
-      <Filter>Source Files\parser</Filter>
+      <Filter>Resource Files\parser</Filter>
     </ClInclude>
     <ClInclude Include="lexer.h">
-      <Filter>Source Files\lexer</Filter>
+      <Filter>Resource Files\lexer</Filter>
+    </ClInclude>
+    <ClInclude Include="token.h">
+      <Filter>Resource Files\token</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
