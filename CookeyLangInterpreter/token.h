@@ -3,7 +3,8 @@
 
 #include <string>
 
-enum class TType {
+enum class TType
+{
 	// reserved
 	VAR, FINAL, DELETEVARIABLE,
 	FUNCTION, RET, EXIT, LAMBDA,
