@@ -1,7 +1,10 @@
 #ifndef TOKEN_H
 #define TOKEN_H
 
+// this is the 'global' file as all stages require it.
 #include <string>
+
+#define error(line, col, message, ...) printf("[%d : %d] " message "\n", line, col, ##__VA_ARGS__);
 
 enum class TType
 {
@@ -33,7 +36,10 @@ enum class TType
 	// symbols
 	SEMI, COMMA, DOT, AT,
 	LEFT_PAREN, RIGHT_PAREN, LEFT_BRACK, RIGHT_BRACK, LEFT_BRACE, RIGHT_BRACE,
-	QUE, COL
+	QUE, COL,
+
+	// end of file
+	END
 };
 
 class Token

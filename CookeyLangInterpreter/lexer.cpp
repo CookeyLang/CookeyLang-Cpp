@@ -29,6 +29,12 @@ std::vector<Token> lexer(std::string code)
 
 	while (VALID) {
 		char curr = code[i];
+
+		switch (curr) {
+		default:
+			error(line, col, "Unexpected character %c", curr);
+			break;
+		}
 	}
 
 	return output;
