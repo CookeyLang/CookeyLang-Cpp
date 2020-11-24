@@ -51,7 +51,6 @@ std::vector<Token> lexer(std::string code)
 				else {
 					next(); // the *
 					next(); // the %
-					std::cout << i << std::endl;
 				}
 			}
 			else if (match('=')) apptok(TType::MODULO_EQ);
@@ -90,7 +89,7 @@ std::vector<Token> lexer(std::string code)
 
 		case '\n':
 			newline();
-			break;
+			continue; // avoid skipping next char
 
 		default:
 			error(line, col, "Unexpected character %c", curr);
