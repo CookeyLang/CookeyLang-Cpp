@@ -68,6 +68,14 @@ std::vector<Token> lexer(std::string code)
 		case '>': match('=') ? apptok(TType::GREATER_EQ) : apptok(TType::GREATER); break;
 		case '<': match('=') ? apptok(TType::LESS_EQ) : apptok(TType::LESS); break;
 
+		case '?':
+			apptok(TType::QUE);
+			break;
+
+		case ':':
+			apptok(TType::COL);
+			break;
+
 		case ' ':
 		case '\r':
 		case '\t':
