@@ -33,9 +33,9 @@ std::vector<Token> lexer(std::string code)
 
 		switch (curr) {
 		case '+': match('=') ? apptok(TType::PLUS_EQ) : match('+') ? apptok(TType::PLUS_PLUS) : apptok(TType::PLUS); break;
-        case '-': match('=') ? apptok(TType::MINUS_EQ) : match('-') ? apptok(TType::MINUS_MINUS) : apptok(TType::MINUS); break;
-        case '*': match('=') ? apptok(TType::TIMES_EQ) : apptok(TType::TIMES); break;
-        case '/': match('=') ? apptok(TType::DIVIDE_EQ) : apptok(TType::DIVIDE); break;
+		case '-': match('=') ? apptok(TType::MINUS_EQ) : match('-') ? apptok(TType::MINUS_MINUS) : apptok(TType::MINUS); break;
+		case '*': match('=') ? apptok(TType::TIMES_EQ) : apptok(TType::TIMES); break;
+		case '/': match('=') ? apptok(TType::DIVIDE_EQ) : apptok(TType::DIVIDE); break;
 		case '^': match('=') ? apptok(TType::POWER_EQ) : apptok(TType::POWER); break;
 
 		case '%':
@@ -58,9 +58,15 @@ std::vector<Token> lexer(std::string code)
 		case '@': apptok(TType::AT); break;
 
 		case '(': apptok(TType::LEFT_PAREN); break;
-        case ')': apptok(TType::RIGHT_PAREN); break;
-        case '{': apptok(TType::LEFT_BRACE); break;
-        case '}': apptok(TType::RIGHT_BRACE); break;
+		case ')': apptok(TType::RIGHT_PAREN); break;
+		case '{': apptok(TType::LEFT_BRACE); break;
+		case '}': apptok(TType::RIGHT_BRACE); break;
+
+		case '!': match('=') ? apptok(TType::BANG_EQ) : apptok(TType::BANG); break;
+		case '=': match('=') ? apptok(TType::EQ_EQ) : apptok(TType::EQ); break;
+
+		case '>': match('=') ? apptok(TType::GREATER_EQ) : apptok(TType::GREATER); break;
+		case '<': match('=') ? apptok(TType::LESS_EQ) : apptok(TType::LESS); break;
 
 		case ' ':
 		case '\r':
