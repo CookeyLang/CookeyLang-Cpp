@@ -92,7 +92,9 @@ std::vector<Token> lexer(std::string code)
 				break;
 
 			case '%':
-				if (match('%')) while (VALID && code[PEEK] != '\n') i++;
+				if (match('%'))
+					while (VALID && code[PEEK] != '\n')
+						i++;
 				else if (match('*'))
 				{
 					while (VALID && !(code[PEEK] == '*' && code[(int64_t)i + 2] == '%'))
@@ -160,6 +162,29 @@ std::vector<Token> lexer(std::string code)
 			case ':':
 				apptok(TType::COL);
 				break;
+
+			case '"':
+			case '\'': {
+				char type = curr;
+				std::string value;
+
+				while (VALID && code[PEEK] != type)
+				{
+					next();
+					// todo: if statement
+					value += code[i];
+				}
+
+				if (code[PEEK] != type)
+				{
+					error(line, col, "Unterminated string");
+				}
+				else
+					next(); // the " or '
+
+				append(TType::STRING, value);
+			}
+			break;
 
 			case ' ':
 			case '\r':
