@@ -3,6 +3,7 @@
 
 // macros
 #define VALID i < code.length()
+#define PEEK (int64_t) i + 1
 
 // functions
 static void bappend(std::vector<Token>* output, int line, int col, TType type, std::string val);
@@ -24,7 +25,8 @@ std::vector<Token> lexer(std::string code)
 	using namespace std::placeholders; // _1, _2, etc
 
 
-	while (VALID) {
+	while (VALID)
+	{
 		auto append = std::bind(bappend, &output, line, col, _1, _2);
 		auto apptok = std::bind(bappend, &output, line, col, _1, "");
 		auto newline = std::bind(bnewline, &line, &col, &i);
@@ -33,63 +35,138 @@ std::vector<Token> lexer(std::string code)
 
 		char curr = code[i];
 
-		switch (curr) {
-		case '+': match('=') ? apptok(TType::PLUS_EQ) : match('+') ? apptok(TType::PLUS_PLUS) : apptok(TType::PLUS); break;
-		case '-': match('=') ? apptok(TType::MINUS_EQ) : match('-') ? apptok(TType::MINUS_MINUS) : apptok(TType::MINUS); break;
-		case '*': match('=') ? apptok(TType::TIMES_EQ) : apptok(TType::TIMES); break;
-		case '/': match('=') ? apptok(TType::DIVIDE_EQ) : apptok(TType::DIVIDE); break;
-		case '^': match('=') ? apptok(TType::POWER_EQ) : apptok(TType::POWER); break;
+		if (isNum(curr))
+		{
+			std::string value;
 
-		case '%':
-			if (match('%')) while (VALID && code[(int64_t)i + 1] != '\n') i++;
-			else if (match('*')) {
-				while (VALID && !(code[(int64_t)i + 1] == '*' && code[(int64_t)i + 2] == '%')) code[i] == '\n' ? newline() : next();
+			value += curr;
 
-				if (code[(int64_t)i + 1] != '*' && code[(int64_t)i + 2] != '%') {
-					error(line, col, "Unterminated multi-line comment.");
-				}
-				else {
-					next(); // the *
-					next(); // the %
+			while (isNum(value[PEEK]))
+			{
+				next();
+				value += code[i];
+			}
+
+			if (value[PEEK] == '.' && isNum(value[PEEK + 1]))
+			{
+				next(); // the .
+				value += code[i];
+
+				while (isNum(value[PEEK]))
+				{
+					next();
+					value += code[i];
 				}
 			}
-			else if (match('=')) apptok(TType::MODULO_EQ);
-			else apptok(TType::MODULO);
-			break;
 
-		case ';': apptok(TType::SEMI); break;
-		case ',': apptok(TType::COMMA); break;
-		case '.': apptok(TType::DOT); break;
-		case '@': apptok(TType::AT); break;
-
-		case '(': apptok(TType::LEFT_PAREN); break;
-		case ')': apptok(TType::RIGHT_PAREN); break;
-		case '{': apptok(TType::LEFT_BRACE); break;
-		case '}': apptok(TType::RIGHT_BRACE); break;
-
-		case '!': match('=') ? apptok(TType::BANG_EQ) : apptok(TType::BANG); break;
-		case '=': match('=') ? apptok(TType::EQ_EQ) : apptok(TType::EQ); break;
-
-		case '>': match('=') ? apptok(TType::GREATER_EQ) : apptok(TType::GREATER); break;
-		case '<': match('=') ? apptok(TType::LESS_EQ) : apptok(TType::LESS); break;
-
-		case '?': apptok(TType::QUE); break;
-		case ':': apptok(TType::COL); break;
-
-		case ' ':
-		case '\r':
-		case '\t':
-			// ignore whitespace
-			break;
-
-		case '\n':
-			newline();
-			continue; // avoid skipping next char
-
-		default:
-			error(line, col, "Unexpected character %c", curr);
-			break;
+			append(TType::NUMBER, value);
 		}
+		else if (isAlpha(curr))
+		{
+
+		}
+		else
+			switch (curr)
+			{
+			case '+':
+				match('=') ? apptok(TType::PLUS_EQ) : match('+') ? apptok(TType::PLUS_PLUS) : apptok(TType::PLUS);
+				break;
+			case '-':
+				match('=') ? apptok(TType::MINUS_EQ) : match('-') ? apptok(TType::MINUS_MINUS) : apptok(TType::MINUS);
+				break;
+			case '*':
+				match('=') ? apptok(TType::TIMES_EQ) : apptok(TType::TIMES);
+				break;
+			case '/':
+				match('=') ? apptok(TType::DIVIDE_EQ) : apptok(TType::DIVIDE);
+				break;
+			case '^':
+				match('=') ? apptok(TType::POWER_EQ) : apptok(TType::POWER);
+				break;
+
+			case '%':
+				if (match('%'))
+					while (VALID && code[PEEK] != '\n')
+						i++;
+				else if (match('*')) {
+					while (VALID && !(code[PEEK] == '*' && code[(int64_t)i + 2] == '%'))
+						code[i] == '\n' ? newline() : next();
+
+					if (code[PEEK] != '*' && code[(int64_t)i + 2] != '%') {
+						error(line, col, "Unterminated multi-line comment.");
+					}
+					else {
+						next(); // the *
+						next(); // the %
+					}
+				}
+				else if (match('='))
+					apptok(TType::MODULO_EQ);
+				else
+					apptok(TType::MODULO);
+				break;
+
+			case ';':
+				apptok(TType::SEMI);
+				break;
+			case ',':
+				apptok(TType::COMMA);
+				break;
+			case '.':
+				apptok(TType::DOT);
+				break;
+			case '@':
+				apptok(TType::AT);
+				break;
+
+			case '(':
+				apptok(TType::LEFT_PAREN);
+				break;
+			case ')':
+				apptok(TType::RIGHT_PAREN);
+				break;
+			case '{':
+				apptok(TType::LEFT_BRACE);
+				break;
+			case '}':
+				apptok(TType::RIGHT_BRACE);
+				break;
+
+			case '!':
+				match('=') ? apptok(TType::BANG_EQ) : apptok(TType::BANG);
+				break;
+			case '=':
+				match('=') ? apptok(TType::EQ_EQ) : apptok(TType::EQ);
+				break;
+
+			case '>':
+				match('=') ? apptok(TType::GREATER_EQ) : apptok(TType::GREATER);
+				break;
+			case '<':
+				match('=') ? apptok(TType::LESS_EQ) : apptok(TType::LESS);
+				break;
+
+			case '?':
+				apptok(TType::QUE);
+				break;
+			case ':':
+				apptok(TType::COL);
+				break;
+
+			case ' ':
+			case '\r':
+			case '\t':
+				// ignore whitespace
+				break;
+
+			case '\n':
+				newline();
+				continue; // avoid skipping next char
+
+			default:
+				error(line, col, "Unexpected character %c", curr);
+				break;
+			}
 
 		next();
 	}

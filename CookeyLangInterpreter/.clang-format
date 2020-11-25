@@ -3,8 +3,7 @@
 # The style options in this file are a best effort attempt to replicate the
 # current IDE formatting configuration from Tools > Options. The following
 # style options, however, should be verified:
-# AfterClass, AfterControlStatement, AfterEnum, AfterFunction, AfterNamespace, 
-# AfterStruct, AfterUnion
+# IndentBraces
 
 AccessModifierOffset: -4
 AlignAfterOpenBracket: DontAlign
@@ -12,19 +11,19 @@ AllowShortBlocksOnASingleLine: true
 AllowShortFunctionsOnASingleLine: All
 BasedOnStyle: LLVM
 BraceWrapping:
-  AfterClass: true    # TODO: verify
-  AfterControlStatement: true    # TODO: verify
-  AfterEnum: true    # TODO: verify
-  AfterFunction: true    # TODO: verify
-  AfterNamespace: true    # TODO: verify
-  AfterStruct: true    # TODO: verify
-  AfterUnion: true    # TODO: verify
+  AfterClass: true
+  AfterControlStatement: true
+  AfterEnum: true
+  AfterFunction: true
+  AfterNamespace: true
+  AfterStruct: true
+  AfterUnion: true
   BeforeCatch: true
   BeforeElse: true
   IndentBraces: false
   SplitEmptyFunction: true
   SplitEmptyRecord: true
-BreakBeforeBraces: Stroustrup
+BreakBeforeBraces: Custom
 ColumnLimit: 0
 Cpp11BracedListStyle: false
 FixNamespaceComments: false
