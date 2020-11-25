@@ -73,13 +73,8 @@ std::vector<Token> lexer(std::string code)
 		case '>': match('=') ? apptok(TType::GREATER_EQ) : apptok(TType::GREATER); break;
 		case '<': match('=') ? apptok(TType::LESS_EQ) : apptok(TType::LESS); break;
 
-		case '?':
-			apptok(TType::QUE);
-			break;
-
-		case ':':
-			apptok(TType::COL);
-			break;
+		case '?': apptok(TType::QUE); break;
+		case ':': apptok(TType::COL); break;
 
 		case ' ':
 		case '\r':
@@ -138,7 +133,8 @@ static bool isAlphaNum(char c)
 
 static bool bmatch(std::string code, int* i, char c)
 {
-	if (code[(int64_t)(*i) + 1] == c) {
+	if (code[(int64_t)(*i) + 1] == c)
+	{
 		(*i)++;
 		return true;
 	}
