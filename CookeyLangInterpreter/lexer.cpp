@@ -1,5 +1,4 @@
 #include "lexer.h"
-#include <iostream>
 
 // macros
 #define VALID i < code.length()
@@ -38,7 +37,6 @@ std::vector<Token> lexer(std::string code)
 		if (isNum(curr))
 		{
 			std::string value;
-
 			value += curr;
 
 			while (isNum(value[PEEK]))
@@ -63,7 +61,16 @@ std::vector<Token> lexer(std::string code)
 		}
 		else if (isAlpha(curr))
 		{
+			std::string value;
+			value += curr;
 
+			while (isAlphaNum(code[PEEK]))
+			{
+				next();
+				value += code[i];
+			}
+
+			append(TType::IDENTIFIER, value);
 		}
 		else
 			switch (curr)
@@ -85,17 +92,18 @@ std::vector<Token> lexer(std::string code)
 				break;
 
 			case '%':
-				if (match('%'))
-					while (VALID && code[PEEK] != '\n')
-						i++;
-				else if (match('*')) {
+				if (match('%')) while (VALID && code[PEEK] != '\n') i++;
+				else if (match('*'))
+				{
 					while (VALID && !(code[PEEK] == '*' && code[(int64_t)i + 2] == '%'))
 						code[i] == '\n' ? newline() : next();
 
-					if (code[PEEK] != '*' && code[(int64_t)i + 2] != '%') {
+					if (code[PEEK] != '*' && code[(int64_t)i + 2] != '%')
+					{
 						error(line, col, "Unterminated multi-line comment.");
 					}
-					else {
+					else
+					{
 						next(); // the *
 						next(); // the %
 					}
@@ -219,3 +227,4 @@ static bool bmatch(std::string code, int* i, char c)
 }
 
 #undef VALID
+#undef PEEK
