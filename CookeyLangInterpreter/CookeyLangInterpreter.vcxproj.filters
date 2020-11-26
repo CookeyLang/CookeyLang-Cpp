@@ -63,4 +63,9 @@
   <ItemGroup>
     <None Include=".clang-format" />
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="grammar.txt">
+      <Filter>Resource Files\parser</Filter>
+    </Text>
+  </ItemGroup>
 </Project>
