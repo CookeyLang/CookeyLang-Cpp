@@ -63,10 +63,10 @@
       <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="base.h">
-      <Filter>Header Files</Filter>
+      <Filter>Resource Files\parser\ast</Filter>
     </ClInclude>
     <ClInclude Include="expr.h">
-      <Filter>Header Files</Filter>
+      <Filter>Resource Files\parser\ast</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

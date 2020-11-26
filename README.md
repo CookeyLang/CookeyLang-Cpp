@@ -6,7 +6,7 @@ All the code can be found in `CookeyLangInterpreter` folder (much as visual stud
 Happy coding!
 
 ## Compiling
-Make sure you compile with `/std:c++latest`. For linux users,
+Make sure you compile with at least `/std:c++14`. For linux users,
 ```sh
-g++ *.cpp -std=c++20 -o CookeyLangInterpreter
+g++ *.cpp -std=c++14 -o CookeyLangInterpreter
 ```
