@@ -25,6 +25,9 @@
     <Filter Include="Resource Files\token">
       <UniqueIdentifier>{4faeac86-f742-47fe-b5e1-641e99e1eafa}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resource Files\parser\ast">
+      <UniqueIdentifier>{636d84de-9941-4e62-bc44-409fe3d76258}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="interpreter.cpp">
@@ -58,6 +61,12 @@
     </ClInclude>
     <ClInclude Include="main.h">
       <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="base.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="expr.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
