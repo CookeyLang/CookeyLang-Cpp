@@ -14,3 +14,4 @@ case, switch, break, var, final, deleteVariable, function, ret, exit, lambda, cl
 strings"
 "\"and yet more"
 ;,.@(){}!=<>?:
+||

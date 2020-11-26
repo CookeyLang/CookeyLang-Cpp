@@ -4,7 +4,7 @@
 // this is the 'global' file as all stages require it.
 #include <string>
 
-#define error(message, ...) printf("<%s> [%d : %d] " message "\n", file, line, col, ##__VA_ARGS__);
+#define error(message, ...) printf("<%s> [%d : %d] " message "\n", file.c_str(), line, col, ##__VA_ARGS__);
 
 enum class TType
 {
