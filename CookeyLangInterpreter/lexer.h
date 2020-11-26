@@ -6,6 +6,7 @@
 
 #include <vector>
 #include <functional>
+#include <map>
 
 std::vector<Token> lexer(std::string code);
 

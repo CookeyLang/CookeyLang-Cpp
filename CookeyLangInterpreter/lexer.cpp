@@ -21,6 +21,31 @@ std::vector<Token> lexer(std::string code)
 {
 	int line = 1, col = 1, i = 0;
 	std::vector<Token> output;
+	std::map<std::string, TType> reserved = {
+		// Variables
+		{ "var", TType::VAR }, { "final", TType::FINAL }, { "deleteVariable", TType::DELETEVARIABLE },
+
+		// Functions
+		{ "function", TType::FUNCTION }, { "ret", TType::RET }, { "exit", TType::EXIT }, { "lambda", TType::LAMBDA },
+
+		// Classes
+		{ "class", TType::CLASS }, { "this", TType::THIS }, { "extends", TType::EXTENDS }, { "superClass", TType::SUPERCLASS },
+
+		// Values
+		{ "NaV", TType::NAV }, { "true", TType::TRUE }, { "false", TType::FALSE },
+
+		// If Statements
+		{ "if", TType::IF }, { "el", TType::EL },
+
+		// Logic
+		{ "and", TType::AND }, { "or", TType::OR },
+
+		// Loops
+		{ "foreach", TType::FOREACH }, { "for", TType::FOR }, { "forrep", TType::FORREP }, { "in", TType::IN }, { "while", TType::WHILE }, { "break", TType::BREAK }, { "do", TType::DO },
+
+		// Switch
+		{ "switch", TType::SWITCH }, { "case", TType::CASE }, { "default", TType::DEFAULT }
+	};
 	using namespace std::placeholders; // _1, _2, etc
 
 
@@ -70,7 +95,8 @@ std::vector<Token> lexer(std::string code)
 				value += code[i];
 			}
 
-			append(TType::IDENTIFIER, value);
+			if (reserved.count(value)) append(reserved[value], value);
+			else append(TType::IDENTIFIER, value);
 		}
 		else
 			switch (curr)
