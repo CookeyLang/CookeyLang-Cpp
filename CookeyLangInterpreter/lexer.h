@@ -8,6 +8,6 @@
 #include <functional>
 #include <map>
 
-std::vector<Token> lexer(std::string code);
+std::vector<Token> lexer(std::string code, std::string file);
 
 #endif

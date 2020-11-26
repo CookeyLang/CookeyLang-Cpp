@@ -17,7 +17,7 @@ static bool isAlpha(char c);
 static bool isAlphaNum(char c);
 
 
-std::vector<Token> lexer(std::string code)
+std::vector<Token> lexer(std::string code, std::string file)
 {
 	int line = 1, col = 1, i = 0;
 	std::vector<Token> output;
@@ -95,8 +95,10 @@ std::vector<Token> lexer(std::string code)
 				value += code[i];
 			}
 
-			if (reserved.count(value)) append(reserved[value], value);
-			else append(TType::IDENTIFIER, value);
+			if (reserved.count(value))
+				append(reserved[value], value);
+			else
+				append(TType::IDENTIFIER, value);
 		}
 		else
 			switch (curr)
@@ -128,7 +130,7 @@ std::vector<Token> lexer(std::string code)
 
 					if (code[PEEK] != '*' && code[(int64_t)i + 2] != '%')
 					{
-						error(line, col, "Unterminated multi-line comment.");
+						error("Unterminated multi-line comment.");
 					}
 					else
 					{
@@ -236,7 +238,7 @@ std::vector<Token> lexer(std::string code)
 						case 'u': {
 
 							if (code[PEEK] != '{')
-								error(line, col, "Expected a '{' after unicode escape sequence.");
+								error( "Expected a '{' after unicode escape sequence.");
 							next(); // the {
 
 							std::string hex;
@@ -248,7 +250,7 @@ std::vector<Token> lexer(std::string code)
 							}
 
 							if (code[PEEK] != '}')
-								error(line, col, "Expect '}' after unicode escape code.");
+								error("Expect '}' after unicode escape code.");
 							next();
 
 							value += (char)(std::stoi(hex, nullptr, 16)); // todo
@@ -268,7 +270,7 @@ std::vector<Token> lexer(std::string code)
 							break;
 
 						default:
-							error(line, col, "Unrecognized escape sequence %c", code[i]);
+							error("Unrecognized escape sequence %c", code[i]);
 							break;
 						}
 					}
@@ -278,7 +280,7 @@ std::vector<Token> lexer(std::string code)
 
 				if (code[PEEK] != type)
 				{
-					error(line, col, "Unterminated string");
+					error("Unterminated string");
 				}
 				else
 					next(); // the " or '
@@ -298,7 +300,7 @@ std::vector<Token> lexer(std::string code)
 				continue; // avoid skipping next char
 
 			default:
-				error(line, col, "Unexpected character %c", curr);
+				error("Unexpected character %c", curr);
 				break;
 			}
 

@@ -17,7 +17,7 @@ int main(int argc, char** argv)
 			code += line + '\n';
 		}
 		
-		std::vector<Token> tokens = lexer(code);
+		std::vector<Token> tokens = lexer(code, argv[1]);
 	}
 
 	return 0;

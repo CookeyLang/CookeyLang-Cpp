@@ -1,0 +1,5 @@
+program => addition
+
+addition => multiplication ( ( "+" | "-" ) multiplication )*
+multiplication => expr ( ( "*" | "/" ) expr )*
+expr => NUMBER #| "(" addition ")"
