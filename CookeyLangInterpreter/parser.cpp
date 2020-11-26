@@ -15,7 +15,7 @@ void parser(std::vector<Token> tokens, std::string file)
 	using namespace std::placeholders;
 
 	int i = 0;
-	auto match = [=](auto... T) { bmatch(tokens, i, T); };
+	auto match = std::bind_front(bmatch, i, tokens);
 }
 
 
