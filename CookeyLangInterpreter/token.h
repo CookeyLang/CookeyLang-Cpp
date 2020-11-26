@@ -47,9 +47,9 @@ class Token
 public:
 	int line, col;
 	TType type;
-	std::string value;
+	std::string value, file;
 
-	Token(int line, int col, TType type, std::string value);
+	Token(int line, int col, std::string file, TType type, std::string value);
 };
 
 #endif

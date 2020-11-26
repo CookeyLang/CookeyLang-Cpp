@@ -5,7 +5,7 @@
 #define PEEK (int64_t) i + 1
 
 // functions
-static void bappend(std::vector<Token>* output, int line, int col, TType type, std::string val);
+static void bappend(std::vector<Token>* output, int line, int col, std::string file, TType type, std::string val);
 
 static void bnewline(int* line, int* col, int* i);
 static void bnext(int* col, int* i);
@@ -51,8 +51,8 @@ std::vector<Token> lexer(std::string code, std::string file)
 
 	while (VALID)
 	{
-		auto append = std::bind(bappend, &output, line, col, _1, _2);
-		auto apptok = std::bind(bappend, &output, line, col, _1, "");
+		auto append = std::bind(bappend, &output, line, col, file, _1, _2);
+		auto apptok = std::bind(bappend, &output, line, col, file, _1, "");
 		auto newline = std::bind(bnewline, &line, &col, &i);
 		auto next = std::bind(bnext, &col, &i);
 		auto match = std::bind(bmatch, code, &i, _1);
@@ -311,9 +311,9 @@ std::vector<Token> lexer(std::string code, std::string file)
 };
 
 
-static void bappend(std::vector<Token>* output, int line, int col, TType type, std::string val)
+static void bappend(std::vector<Token>* output, int line, int col, std::string file, TType type, std::string val)
 {
-	output->push_back(Token(line, col, type, val));
+	output->push_back(Token(line, col, file, type, val));
 }
 
 static void bnewline(int* line, int* col, int* i)
