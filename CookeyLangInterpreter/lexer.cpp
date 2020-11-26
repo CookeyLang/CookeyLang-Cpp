@@ -171,7 +171,82 @@ std::vector<Token> lexer(std::string code)
 				while (VALID && code[PEEK] != type)
 				{
 					next();
-					// todo: if statement
+
+					if (code[i] == '\\')
+					{
+						next(); // the \ escape
+						switch (code[i])
+						{
+						case '\'':
+							value += "'";
+							break;
+
+						case '"':
+							value += '"';
+							break;
+
+						case 'r':
+							value += '\r';
+							break;
+
+						case 'n':
+							value += '\n';
+							break;
+
+						case 'm': {
+
+							std::string keycode;
+
+							while (VALID && isNum(code[PEEK]))
+							{
+								next();
+								keycode += code[i];
+							}
+
+							value += (char)(std::stoi(keycode));
+						}
+						break;
+
+						case 'u': {
+
+							if (code[PEEK] != '{')
+								error(line, col, "Expected a '{' after unicode escape sequence.");
+							next(); // the {
+
+							std::string hex;
+
+							while (code[PEEK] != '}')
+							{
+								next();
+								hex += code[i];
+							}
+
+							if (code[PEEK] != '}')
+								error(line, col, "Expect '}' after unicode escape code.");
+							next();
+
+							value += (char)(std::stoi(hex, nullptr, 16)); // todo
+						}
+						break;
+
+						case 'e':
+							value += '\x1b';
+							break;
+
+						case '0':
+							value += '\0';
+							break;
+
+						case '\\':
+							value += '\\';
+							break;
+
+						default:
+							error(line, col, "Unrecognized escape sequence %c", code[i]);
+							break;
+						}
+					}
+
 					value += code[i];
 				}
 
