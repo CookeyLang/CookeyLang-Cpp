@@ -9,6 +9,8 @@ class Expr
 public:
 	int line, col;
 	std::string file;
+
+	virtual void visit();
 };
 
 #endif

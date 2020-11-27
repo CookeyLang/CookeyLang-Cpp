@@ -20,5 +20,24 @@ public:
 	}
 };
 
+class Binary : public Expr
+{
+public:
+	Expr left;
+	Token op;
+	Expr right;
+
+	Binary(Expr left, Token op, Expr right)
+	{
+		line = op.line;
+		col = op.col;
+		file = op.file;
+
+		this->left = left;
+		this->op = op;
+		this->right = right;
+	}
+};
+
 
 #endif

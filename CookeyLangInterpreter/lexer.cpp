@@ -64,18 +64,18 @@ std::vector<Token> lexer(std::string code, std::string file)
 			std::string value;
 			value += curr;
 
-			while (isNum(value[PEEK]))
+			while (isNum(code[PEEK]))
 			{
 				next();
 				value += code[i];
 			}
 
-			if (value[PEEK] == '.' && isNum(value[PEEK + 1]))
+			if (code[PEEK] == '.' && isNum(code[PEEK + 1]))
 			{
 				next(); // the .
 				value += code[i];
 
-				while (isNum(value[PEEK]))
+				while (isNum(code[PEEK]))
 				{
 					next();
 					value += code[i];

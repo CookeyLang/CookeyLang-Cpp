@@ -50,6 +50,7 @@ public:
 	std::string value, file;
 
 	Token(int line, int col, std::string file, TType type, std::string value);
+	Token() { line = 0, col = 0, type = TType::END, value = "", file = ""; } // for default constructor
 };
 
 #endif

@@ -1,3 +1,17 @@
-%% this covers almost everything
-10 + 10 * (4 * 3 + 2)
-%% expected result: 150
+%*
+asdf
+*%
+%% operators
+; + - * / % ^
++= -= *= /= %= ^=
+%% not keywords
+identifier, edgeandcase
+%% keywords
+case, switch, break, var, final, deleteVariable, function, ret, exit, lambda, class, this, extends, superClass, NaV, true, false, if el and or foreach for forrep in while break do
+"string"
+'string'
+"new
+strings"
+"\"and yet more"
+;,.@(){}!=<>?:
+||

@@ -21,9 +21,6 @@ void parser(std::vector<Token> tokens, std::string file)
 	auto match = [&](auto... T) { bmatch(tokens, &i, T...); };
 	auto advance = std::bind(badvance, tokens, &i);
 	auto previous = std::bind(bprevious, tokens, i);
-
-	match(TType::AND);
-	// bmatch(tokens, &i, TType::AND);
 }
 
 
@@ -48,7 +45,8 @@ static bool bmatch(std::vector<Token> tokens, int* i, TType first, T... other)
 
 static Token badvance(std::vector<Token> tokens, int* i)
 {
-	if (*i < tokens.size()) (*i)++;
+	if (*i < tokens.size())
+		(*i)++;
 	return bprevious(tokens, *i);
 }
 

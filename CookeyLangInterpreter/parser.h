@@ -3,6 +3,8 @@
 
 #include "token.h"
 
+#include "expr.h"
+
 #include <vector>
 #include <functional>
 
