@@ -3,54 +3,45 @@
 // macros
 #define VALID (i < tokens.size())
 
-// functions
-static bool bmatch(std::vector<Token> tokens, int* i, TType first);
-
-template <typename... T>
-static bool bmatch(std::vector<Token> tokens, int* i, TType first, T... other);
-
-static Token badvance(std::vector<Token> tokens, int* i);
-static Token bprevious(std::vector<Token> tokens, int i);
-
-
-void parser(std::vector<Token> tokens, std::string file)
+Parser::Parser(std::vector<Token> tokens, std::string file)
 {
-	using namespace std::placeholders;
-
-	int i = 0;
-	auto match = [&](auto... T) { bmatch(tokens, &i, T...); };
-	auto advance = std::bind(badvance, tokens, &i);
-	auto previous = std::bind(bprevious, tokens, i);
+	this->tokens = tokens;
+	this->file = file;
 }
 
 
-static bool bmatch(std::vector<Token> tokens, int* i, TType first)
+Expr Parser::init()
 {
-	if (*i >= tokens.size() && tokens[*i].type == first)
+	// todo :(
+	return Expr();
+}
+
+
+// functions
+template <typename... T>
+bool Parser::match(TType first, T... other)
+{
+	return match(first) ? true : match(other...);
+}
+
+bool Parser::match(TType first)
+{
+	if (VALID && tokens[i].type == first)
 	{
-		badvance(tokens, i);
+		advance();
 		return true;
 	}
 
 	return false;
 }
 
-template <typename... T>
-static bool bmatch(std::vector<Token> tokens, int* i, TType first, T... other)
+Token Parser::advance()
 {
-	if (bmatch(tokens, i, first))
-		return true;
-	return bmatch(other...);
+	if VALID i++; // lol
+	return previous();
 }
 
-static Token badvance(std::vector<Token> tokens, int* i)
-{
-	if (*i < tokens.size())
-		(*i)++;
-	return bprevious(tokens, *i);
-}
-
-static Token bprevious(std::vector<Token> tokens, int i)
+Token Parser::previous()
 {
 	return tokens[(int64_t)i - 1];
 }

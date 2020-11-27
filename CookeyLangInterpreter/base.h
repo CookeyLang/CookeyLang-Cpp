@@ -10,7 +10,7 @@ public:
 	int line, col;
 	std::string file;
 
-	virtual void visit();
+	Expr() { line = 0, col = 0, file = ""; }
 };
 
 #endif

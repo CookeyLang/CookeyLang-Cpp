@@ -2,12 +2,26 @@
 #define PARSER_H
 
 #include "token.h"
-
 #include "expr.h"
 
 #include <vector>
-#include <functional>
 
-void parser(std::vector<Token> tokens, std::string file);
+class Parser
+{
+	int i = 0;
+	std::vector<Token> tokens;
+	std::string file;
+
+	template <typename... T>
+	bool match(TType first, T... other);
+	bool match(TType first);
+
+	Token advance();
+	Token previous();
+
+public:
+	Parser(std::vector<Token> tokens, std::string file);
+	Expr init();
+};
 
 #endif

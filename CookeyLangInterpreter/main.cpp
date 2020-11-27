@@ -23,9 +23,11 @@ int main(int argc, char** argv)
 			code += line + '\n';
 		}
 
-		lexer(code, argv[1]);
-		
-		// std::vector<Token> tokens = lexer(code, argv[1]);
+		Lexer lexer(code, argv[1]);
+		std::vector<Token> tokens = lexer.init();
+
+		Parser parser(tokens, argv[1]);
+		parser.init();
 	}
 
 	return 0;

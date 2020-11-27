@@ -4,24 +4,12 @@
 #define VALID i < code.length()
 #define PEEK (int64_t) i + 1
 
-// functions
-static void bappend(std::vector<Token>* output, int line, int col, std::string file, TType type, std::string val);
-
-static void bnewline(int* line, int* col, int* i);
-static void bnext(int* col, int* i);
-
-static bool bmatch(std::string code, int* i, char c);
-
-static bool isNum(char c);
-static bool isAlpha(char c);
-static bool isAlphaNum(char c);
-
-
-std::vector<Token> lexer(std::string code, std::string file)
+Lexer::Lexer(std::string code, std::string file)
 {
-	int line = 1, col = 1, i = 0;
-	std::vector<Token> output;
-	std::map<std::string, TType> reserved = {
+	this->code = code;
+	this->file = file;
+
+	reserved = {
 		// Variables
 		{ "var", TType::VAR }, { "final", TType::FINAL }, { "deleteVariable", TType::DELETEVARIABLE },
 
@@ -46,17 +34,12 @@ std::vector<Token> lexer(std::string code, std::string file)
 		// Switch
 		{ "switch", TType::SWITCH }, { "case", TType::CASE }, { "default", TType::DEFAULT }
 	};
-	using namespace std::placeholders; // _1, _2, etc
+}
 
-
+std::vector<Token> Lexer::init()
+{
 	while (VALID)
 	{
-		auto append = std::bind(bappend, &output, line, col, file, _1, _2);
-		auto apptok = std::bind(bappend, &output, line, col, file, _1, "");
-		auto newline = std::bind(bnewline, &line, &col, &i);
-		auto next = std::bind(bnext, &col, &i);
-		auto match = std::bind(bmatch, code, &i, _1);
-
 		char curr = code[i];
 
 		if (isNum(curr))
@@ -104,19 +87,19 @@ std::vector<Token> lexer(std::string code, std::string file)
 			switch (curr)
 			{
 			case '+':
-				match('=') ? apptok(TType::PLUS_EQ) : match('+') ? apptok(TType::PLUS_PLUS) : apptok(TType::PLUS);
+				match('=') ? append(TType::PLUS_EQ) : match('+') ? append(TType::PLUS_PLUS) : append(TType::PLUS);
 				break;
 			case '-':
-				match('=') ? apptok(TType::MINUS_EQ) : match('-') ? apptok(TType::MINUS_MINUS) : apptok(TType::MINUS);
+				match('=') ? append(TType::MINUS_EQ) : match('-') ? append(TType::MINUS_MINUS) : append(TType::MINUS);
 				break;
 			case '*':
-				match('=') ? apptok(TType::TIMES_EQ) : apptok(TType::TIMES);
+				match('=') ? append(TType::TIMES_EQ) : append(TType::TIMES);
 				break;
 			case '/':
-				match('=') ? apptok(TType::DIVIDE_EQ) : apptok(TType::DIVIDE);
+				match('=') ? append(TType::DIVIDE_EQ) : append(TType::DIVIDE);
 				break;
 			case '^':
-				match('=') ? apptok(TType::POWER_EQ) : apptok(TType::POWER);
+				match('=') ? append(TType::POWER_EQ) : append(TType::POWER);
 				break;
 
 			case '%':
@@ -139,56 +122,56 @@ std::vector<Token> lexer(std::string code, std::string file)
 					}
 				}
 				else if (match('='))
-					apptok(TType::MODULO_EQ);
+					append(TType::MODULO_EQ);
 				else
-					apptok(TType::MODULO);
+					append(TType::MODULO);
 				break;
 
 			case ';':
-				apptok(TType::SEMI);
+				append(TType::SEMI);
 				break;
 			case ',':
-				apptok(TType::COMMA);
+				append(TType::COMMA);
 				break;
 			case '.':
-				apptok(TType::DOT);
+				append(TType::DOT);
 				break;
 			case '@':
-				apptok(TType::AT);
+				append(TType::AT);
 				break;
 
 			case '(':
-				apptok(TType::LEFT_PAREN);
+				append(TType::LEFT_PAREN);
 				break;
 			case ')':
-				apptok(TType::RIGHT_PAREN);
+				append(TType::RIGHT_PAREN);
 				break;
 			case '{':
-				apptok(TType::LEFT_BRACE);
+				append(TType::LEFT_BRACE);
 				break;
 			case '}':
-				apptok(TType::RIGHT_BRACE);
+				append(TType::RIGHT_BRACE);
 				break;
 
 			case '!':
-				match('=') ? apptok(TType::BANG_EQ) : apptok(TType::BANG);
+				match('=') ? append(TType::BANG_EQ) : append(TType::BANG);
 				break;
 			case '=':
-				match('=') ? apptok(TType::EQ_EQ) : apptok(TType::EQ);
+				match('=') ? append(TType::EQ_EQ) : append(TType::EQ);
 				break;
 
 			case '>':
-				match('=') ? apptok(TType::GREATER_EQ) : apptok(TType::GREATER);
+				match('=') ? append(TType::GREATER_EQ) : append(TType::GREATER);
 				break;
 			case '<':
-				match('=') ? apptok(TType::LESS_EQ) : apptok(TType::LESS);
+				match('=') ? append(TType::LESS_EQ) : append(TType::LESS);
 				break;
 
 			case '?':
-				apptok(TType::QUE);
+				append(TType::QUE);
 				break;
 			case ':':
-				apptok(TType::COL);
+				append(TType::COL);
 				break;
 
 			case '"':
@@ -311,6 +294,52 @@ std::vector<Token> lexer(std::string code, std::string file)
 };
 
 
+// functions
+void Lexer::append(TType type, std::string val)
+{
+	output.push_back(Token(line, col, file, type, val));
+}
+
+void Lexer::newline()
+{
+	line++;
+	col = 1;
+	i++;
+}
+
+void Lexer::next()
+{
+	col++;
+	i++;
+}
+
+bool Lexer::isNum(char c)
+{
+	return c >= '0' && c <= '9';
+}
+
+bool Lexer::isAlpha(char c)
+{
+	return (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || c == '_';
+}
+
+bool Lexer::isAlphaNum(char c)
+{
+	return isAlpha(c) || isNum(c);
+}
+
+bool Lexer::match(char c)
+{
+	if (code[(int64_t)i + 1] == c)
+	{
+		i++;
+		return true;
+	}
+
+	return false;
+}
+
+/*
 static void bappend(std::vector<Token>* output, int line, int col, std::string file, TType type, std::string val)
 {
 	output->push_back(Token(line, col, file, type, val));
@@ -353,6 +382,7 @@ static bool bmatch(std::string code, int* i, char c)
 	}
 	return false;
 }
+*/
 
 #undef VALID
 #undef PEEK
