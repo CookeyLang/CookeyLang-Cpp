@@ -1,5 +1,7 @@
 program => addition
 
+#expression => addition
 addition => multiplication ( ( "+" | "-" ) multiplication )*
-multiplication => expr ( ( "*" | "/" ) expr )*
-expr => NUMBER #| "(" addition ")"
+multiplication => unary ( ( "*" | "/" ) unary )*
+unary => ( "!" | "-" ) unary | primary
+primary => NUMBER | STRING | "true" | "false" | "NaV" | "(" addition ")"

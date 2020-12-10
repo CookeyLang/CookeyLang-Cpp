@@ -27,7 +27,9 @@ int main(int argc, char** argv)
 		std::vector<Token> tokens = lexer.init();
 
 		Parser parser(tokens, argv[1]);
-		parser.init();
+		Expr* ast = parser.init();
+
+		ast->visit();
 	}
 
 	return 0;

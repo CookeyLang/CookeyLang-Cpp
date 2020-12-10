@@ -1,3 +1,4 @@
 %% this covers almost everything
-10 + 10 * (4 * 3 + 2)
+%% 10 + 10 * (4 * 3 + 2)
 %% expected result: 150
+5 + 5

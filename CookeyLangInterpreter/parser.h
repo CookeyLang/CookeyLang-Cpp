@@ -19,9 +19,15 @@ class Parser
 	Token advance();
 	Token previous();
 
+	// main 'parsing' functions
+	Expr* addition();
+	Expr* multiplication();
+	Expr* unary();
+	Expr* primary();
+
 public:
 	Parser(std::vector<Token> tokens, std::string file);
-	Expr init();
+	Expr* init();
 };
 
 #endif
